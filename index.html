@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listely – Del indkøbslister med familien</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #2ECC71;
+            --dark-green: #1A8A4A;
+            --dark: #1C2A1E;
+            --light: #F4FAF6;
+            --gray: #6B7C6E;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--dark); overflow-x: hidden; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 48px; position: sticky; top: 0; background: rgba(244,250,246,0.92); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(46,204,113,0.15); }
+        .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--dark); text-decoration: none; }
+        .logo span { color: var(--green); }
+        nav a { color: var(--gray); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+        nav a:hover { color: var(--green); }
+        .hero { min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 24px; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(46,204,113,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3); color: var(--dark-green); padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 32px; animation: fadeUp 0.6s ease both; }
+        .badge::before { content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%; }
+        h1 { font-family: 'DM Serif Display', serif; font-size: clamp(3rem, 8vw, 6rem); line-height: 1.05; letter-spacing: -0.02em; max-width: 800px; animation: fadeUp 0.6s 0.1s ease both; }
+        h1 em { font-style: italic; color: var(--green); }
+        .hero p { font-size: 1.2rem; color: var(--gray); max-width: 480px; margin: 24px auto 0; line-height: 1.7; font-weight: 300; animation: fadeUp 0.6s 0.2s ease both; }
+        .cta-group { display: flex; gap: 16px; margin-top: 48px; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.6s 0.3s ease both; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--dark); color: white; padding: 16px 32px; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(28,42,30,0.2); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(28,42,30,0.3); }
+        .btn-primary svg { width: 20px; height: 20px; }
+        .features { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+        .section-label { text-align: center; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+        .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); text-align: center; margin-bottom: 64px; line-height: 1.1; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .feature-card { background: white; border-radius: 24px; padding: 40px; border: 1px solid rgba(46,204,113,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(28,42,30,0.08); }
+        .feature-icon { width: 52px; height: 52px; background: rgba(46,204,113,0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 24px; }
+        .feature-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 12px; }
+        .feature-card p { color: var(--gray); line-height: 1.7; font-weight: 300; }
+        .privacy { background: var(--dark); color: white; padding: 100px 24px; }
+        .privacy-inner { max-width: 760px; margin: 0 auto; }
+        .privacy h2 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 48px; color: white; }
+        .privacy h3 { font-size: 1rem; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.05em; margin: 36px 0 12px; }
+        .privacy p, .privacy li { color: rgba(255,255,255,0.65); line-height: 1.8; font-weight: 300; font-size: 0.95rem; }
+        .privacy ul { padding-left: 20px; }
+        .privacy li { margin-bottom: 6px; }
+        .privacy .updated { display: inline-block; background: rgba(46,204,113,0.15); color: var(--green); padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; margin-bottom: 32px; }
+        footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.06); padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        footer p { color: rgba(255,255,255,0.3); font-size: 0.85rem; }
+        footer a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        footer a:hover { color: var(--green); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { nav { padding: 16px 24px; } .features-grid { grid-template-columns: 1fr; } footer { flex-direction: column; text-align: center; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#" class="logo">Listel<span>y</span></a>
+    <a href="#privatlivspolitik">Privatlivspolitik</a>
+</nav>
+
+<section class="hero">
+    <div class="badge">Tilgængelig på App Store</div>
+    <h1>Indkøb gjort<br><em>nemt sammen</em></h1>
+    <p>Del indkøbslister med familien i realtid. Ingen login, ingen besværlighed — bare tilføj og handle.</p>
+    <div class="cta-group">
+        <a href="#" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download på App Store
+        </a>
+    </div>
+</section>
+
+<section class="features">
+    <p class="section-label">Funktioner</p>
+    <h2 class="section-title">Alt du behøver</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Realtidssynkronisering</h3>
+            <p>Alle familiemedlemmer ser ændringer øjeblikkeligt. Tilføj en vare i køkkenet — din partner ser det i butikken.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔗</div>
+            <h3>Del med ét tryk</h3>
+            <p>Del din liste via et link. Modtageren trykker på linket og er automatisk med — ingen konto nødvendig.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💡</div>
+            <h3>Smarte forslag</h3>
+            <p>Appen husker hvad du plejer at købe og foreslår det automatisk næste gang du begynder at skrive.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Ingen konto</h3>
+            <p>Du behøver ikke oprette en konto eller huske en adgangskode. Appen virker fra første åbning.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">👨‍👩‍👧</div>
+            <h3>Flere lister</h3>
+            <p>Opret separate lister til dagligvarer, gør-det-selv projekter eller fester. Hold styr på alt.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Gratis</h3>
+            <p>Listely er helt gratis at bruge. Ingen abonnement, ingen skjulte gebyrer.</p>
+        </div>
+    </div>
+</section>
+
+<section class="privacy" id="privatlivspolitik">
+    <div class="privacy-inner">
+        <h2>Privatlivspolitik</h2>
+        <span class="updated">Sidst opdateret: februar 2026</span>
+        <p>Listely ("appen", "vi", "os") respekterer dit privatliv. Denne privatlivspolitik beskriver hvilke oplysninger vi indsamler, hvordan vi bruger dem og dine rettigheder.</p>
+        <h3>1. Hvad vi indsamler</h3>
+        <ul>
+            <li><strong style="color:white">Visningsnavn:</strong> Det navn du selv vælger ved første åbning af appen.</li>
+            <li><strong style="color:white">Indkøbslister og varer:</strong> De lister og varer du opretter gemmes i skyen via Firebase.</li>
+            <li><strong style="color:white">Anonymt bruger-ID:</strong> Vi tildeler automatisk et anonymt ID via Firebase Anonymous Authentication. Vi kender ikke din identitet.</li>
+            <li><strong style="color:white">Tidligere varer:</strong> Varenavne du har tilføjet gemmes for at give dig forslag fremover.</li>
+        </ul>
+        <h3>2. Hvad vi ikke indsamler</h3>
+        <ul>
+            <li>Vi indsamler ikke din e-mail, dit telefonnummer eller andre personoplysninger.</li>
+            <li>Vi indsamler ikke din lokation.</li>
+            <li>Vi deler ikke dine oplysninger med tredjeparter til markedsføring.</li>
+            <li>Vi sælger ikke dine oplysninger.</li>
+        </ul>
+        <h3>3. Tredjepartstjenester</h3>
+        <p>Vi bruger Google Firebase til at gemme og synkronisere data. Firebase er underlagt Googles privatlivspolitik. Læs mere på <a href="https://firebase.google.com/support/privacy" style="color: var(--green);">firebase.google.com/support/privacy</a>.</p>
+        <h3>4. Datasikkerhed</h3>
+        <p>Dine data overføres krypteret via HTTPS og gemmes sikkert i Firebase Firestore. Adgang til dine lister kræver det unikke bruger-ID der er tildelt din enhed.</p>
+        <h3>5. Dataopbevaring</h3>
+        <p>Dine data gemmes så længe du bruger appen. Du kan til enhver tid slette dine lister direkte i appen. Kontakt os hvis du ønsker alle dine data slettet.</p>
+        <h3>6. Børn</h3>
+        <p>Appen er ikke rettet mod børn under 13 år. Vi indsamler ikke bevidst oplysninger om børn.</p>
+        <h3>7. Ændringer</h3>
+        <p>Vi opdaterer løbende denne politik. Væsentlige ændringer kommunikeres via appen.</p>
+        <h3>8. Kontakt</h3>
+        <p>Spørgsmål? Kontakt os på <a href="mailto:kontakt@listely.app" style="color: var(--green);">kontakt@listely.app</a>.</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Listely. Alle rettigheder forbeholdes.</p>
+    <div style="display:flex; gap: 24px;">
+        <a href="#privatlivspolitik">Privatlivspolitik</a>
+        <a href="mailto:kontakt@listely.app">Kontakt</a>
+    </div>
+</footer>
+
+</body>
+</html>
